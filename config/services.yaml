@@ -4,6 +4,8 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+    app.storage_folder: '%kernel.project_dir%/public/assets/uploads'
+    app.processing_folder: '%kernel.project_dir%/public/assets/img'
 
 services:
     # default configuration for services in *this* file
@@ -19,9 +21,19 @@ services:
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
-    LaSalle\Rendimiento\JudithVilela\Controller\:
-        resource: '../src/Controller'
+    LaSalle\Rendimiento\JudithVilela\ImageRegister\Infrastructure\Controller\:
+        resource: '../src/ImageRegister/Infrastructure/Controller'
         tags: ['controller.service_arguments']
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    LaSalle\Rendimiento\JudithVilela\ImageRegister\Application\ImageRegistered\ImageRegistered:
+        arguments:
+            - '@LaSalle\Rendimiento\JudithVilela\ImageRegister\Infrastructure\Service\ClaviskaProcessingImages'
+
+    LaSalle\Rendimiento\JudithVilela\ImageRegister\Infrastructure\Controller\uploadImagesController:
+        arguments:
+            - '@LaSalle\Rendimiento\JudithVilela\ImageRegister\Application\ImageRegistered\ImageRegistered'
+        tags:
+            - { name: 'image.register'}

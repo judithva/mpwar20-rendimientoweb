@@ -1,3 +1,7 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+
+upload:
+  path: /upload
+  controller: LaSalle\Rendimiento\JudithVilela\ImageRegister\Infrastructure\Controller\uploadImagesController::upload

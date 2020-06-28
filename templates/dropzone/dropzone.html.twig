@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title %}LaSalle Web - Upload images!{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="{{ asset('assets/css/dropzone.css') }}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <p><br></p>
+                <h3 class="h3 mb-3 font-weight-normal">Upload your images</h3><hr>
+                <div class="form-group">
+                    <form  action="" method="post" enctype="multipart/form-data" class="dropzone" id="my-Dropzone">
+                        <div class="col">
+                            <div>
+                                <div class="fallback">
+                                    {{ form_row(form.file, {'label':'Upload your images', 'attr': {'class':'form-control'}}) }}
+                                    <!--<input type="file" name="file" multiple> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div>
+                                <p>{{ form_row(form.tags, {'label': 'Tags:', 'attr': {'class':'form-control'}}) }}</p>
+                            </div>
+                            <div>
+                                <p>{{ form_row(form.description, {'label': 'Descripción:', 'attr': {'class':'form-control'}}) }}</p>
+                            </div>
+                            <div class="mb-3">
+                                <p>{{ form_row(form.submit, {'label':'Upload image', 'id':'addImage', 'attr': {'class':'btn btn-lg btn-primary'}}) }}</p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <script src="{{ asset('assets/js/dropzone.js') }}"></script>
+    <script src="{{ asset('assets/js/customDropzone.js') }}"></script>
+{% endblock %}
