@@ -1,0 +1,98 @@
+version: '3'
+
+services:
+
+  mysql:
+    image: mysql:5.6
+    restart: always
+    env_file:
+      - '.env'
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}      
+      MYSQL_ROOT_USER: ${MYSQL_ROOT_USER}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./var/mysql:/var/lib/mysql     
+    healthcheck:
+      test: "/usr/bin/mysql --user=root --password=password --execute \"SHOW DATABASES;\""
+      interval: 2s
+      timeout: 20s
+      retries: 3
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - '8080:80'
+    volumes:
+      - './:/app'
+      - './docker/nginx/default.conf:/etc/nginx/conf.d/default.conf'
+
+  php:
+    build: './docker/php-fpm'
+    volumes:
+      - './:/app'
+      - './etc/php/php.ini:/usr/local/etc/php/conf.d/php.ini'
+
+#  redis:
+#    image: redis
+#    ports:
+#      - "6379:6379"
+#    volumes:
+#      - ./var/redis:/data
+
+#  rabbitmq:
+#    image: "rabbitmq:3-management"
+#    env_file:
+#      - '.env'
+#    environment:
+#      RABBITMQ_ERLANG_COOKIE: ${RABBITMQ_ERLANG_COOKIE}
+#      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+#      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+#      RABBITMQ_DEFAULT_VHOST: ${RABBITMQ_DEFAULT_VHOST}
+#    ports:
+#      - '15672:15672'
+#      - '5672:5672'
+
+#  elasticsearch:
+#    image: docker.elastic.co/elasticsearch/elasticsearch:6.7.0
+#    user: root
+#    environment:
+#      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+#      - "TAKE_FILE_OWNERSHIP=1"
+#    volumes:
+#      - ./var/elasticsearch/data:/usr/share/elasticsearch/data
+#    ports:
+#      - "9200:9200"
+#    healthcheck:
+#      test: ["CMD-SHELL", "curl --silent --fail localhost:9200/_cluster/health || exit 1"]
+#      interval: 30s
+#      timeout: 30s
+#      retries: 3
+
+#  kibana:
+#    image: docker.elastic.co/kibana/kibana:6.7.0
+#    ports:
+#      - "5601:5601"
+#    environment:
+#      ELASTICSEARCH_HOSTS: "http://elasticsearch:9200"
+#    depends_on:
+#      - elasticsearch
+#    healthcheck:
+#      test: ["CMD", "curl", "-s", "-f", "http://localhost:5601/"]
+#      interval: 30s
+#      timeout: 30s
+#      retries: 3
+ 
+#  blackfire:
+#    image: blackfire/blackfire
+#    env_file:
+#      - '.env'
+#    environment:
+#      BLACKFIRE_CLIENT_ID: ${BLACKFIRE_CLIENT_ID}
+#      BLACKFIRE_CLIENT_TOKEN: ${BLACKFIRE_CLIENT_TOKEN}
+#      BLACKFIRE_SERVER_ID: ${BLACKFIRE_SERVER_ID}
+#      BLACKFIRE_SERVER_TOKEN: ${BLACKFIRE_SERVER_TOKEN}
