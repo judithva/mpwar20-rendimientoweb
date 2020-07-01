@@ -5,7 +5,10 @@ namespace LaSalle\Rendimiento\JudithVilela\ImageRegister\Infrastructure\Controll
 
 use LaSalle\Rendimiento\JudithVilela\ImageRegister\Application\ImageProcessed\ImageProcessed;
 use LaSalle\Rendimiento\JudithVilela\ImageRegister\Application\ImageProcessed\ImageProcessedRequest;
+use LaSalle\Rendimiento\JudithVilela\ImageRegister\Application\SaveImage\SaveImage;
+use LaSalle\Rendimiento\JudithVilela\ImageRegister\Application\SaveImage\SaveImageRequest;
 use LaSalle\Rendimiento\JudithVilela\ImageRegister\Infrastructure\Form\ImageType;
+use LaSalle\Rendimiento\JudithVilela\ImageRegister\Infrastructure\Persistence\Repository\MySQLImageRegisterRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Form\FormError;
@@ -20,12 +23,17 @@ final class uploadImagesController extends AbstractController
     /** @var ImageProcessed */
     private $imageProcessed;
 
+    /** @var SaveImage */
+    private $saveImage;
+
       /**
      * @param ImageProcessed
+     * @param SaveImage
      */
-    public function __construct(ImageProcessed $imageProcessed)
+    public function __construct(ImageProcessed $imageProcessed, SaveImage $saveImage)
     {
         $this->imageProcessed = $imageProcessed;
+        $this->saveImage = $saveImage;
     }
 
     /**
@@ -53,9 +61,9 @@ final class uploadImagesController extends AbstractController
 
                         /*echo '<pre>';
                         var_dump($file);
+                        var_dump('newFileName::'.$newFileName);
                         var_dump('Tags: '.$tags);
                         var_dump('Descripcion: '. $description);
-                        var_dump('newFileName::'.$newFileName);
                         var_dump('extFile::'.$extFile);
                         var_dump('TargetPath:::'.$this->getPath());
                         var_dump('TargetFile:::'.$targetFile);
@@ -63,6 +71,15 @@ final class uploadImagesController extends AbstractController
 
                         try {
                             $file->move($this->getPath(), $newFileName);
+
+                            $imageMysqlRepository = new MySQLImageRegisterRepository();
+                            $this->saveImage->__construct($imageMysqlRepository);
+                            $this->saveImage->__invoke(new SaveImageRequest(
+                                $newFileName,
+                                $targetFile,
+                                $extFile,
+                                $tags,
+                                $description));
 
                             $this->imageProcessed->__invoke(
                                 new ImageProcessedRequest(
@@ -110,7 +127,8 @@ final class uploadImagesController extends AbstractController
 
     private function getPath()
     {
-        return DIRECTORY_SEPARATOR . $this->getParameter('app.storage_folder') . DIRECTORY_SEPARATOR;
+        //return DIRECTORY_SEPARATOR . $this->getParameter('app.storage_folder') . DIRECTORY_SEPARATOR;
+        return $this->getParameter('app.storage_folder').DIRECTORY_SEPARATOR;
     }
 
     private function getNewPath()

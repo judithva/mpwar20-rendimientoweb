@@ -21,17 +21,57 @@ final class RabbitMqProducer implements ImageProcess
      */
     public function send(string $message)
     {
-        $filters = ['sepia', 'bw', 'drk', 'frm','flp'];
+        $filters = ['prd', 'bw', 'ctr', 'frm','flp'];
 
         foreach ($filters as $filter) {
-            $messageFilter = json_decode($message);
-            $messageFilter->filter = $filter;
-            $messageFilter->tag = $messageFilter->tag.' '.$filter;
-            $messageFilter->processedImage = $messageFilter->imageName.'_'.$filter;
-            $messageFilter->processedImagePath =  $messageFilter->processedImagePath.$messageFilter->processedImage.'.'.$messageFilter->imageExt;
-            $newMessage = json_encode($messageFilter, JSON_UNESCAPED_SLASHES);
-
+            $newMessage = $this->setFormat($message, $filter);
             $this->producerInterface->publish($newMessage);
         }
+    }
+
+    /**
+     * @param  string $parameters
+     * @param  string $filter
+     *
+     * @return array
+     */
+    private function setFormat(string $parameters, string $filter) :string
+    {
+        $messageFilter = json_decode($parameters);
+        $messageFilter->filter = $filter;
+        $messageFilter->textFilter = $this->getFilter($filter);
+        $messageFilter->tag = $messageFilter->tag.' '.$this->getFilter($filter);
+        $messageFilter->processedImage = $messageFilter->imageName.'_'.$filter;
+        $messageFilter->processedImagePath =  $messageFilter->processedImagePath.$messageFilter->processedImage.'.'.$messageFilter->imageExt;
+        return json_encode($messageFilter, JSON_UNESCAPED_SLASHES);
+    }
+
+    /**
+     * @param string $filter
+     * @return string
+     */
+    private function getFilter(string $filter): string
+    {
+        $textFilter = null;
+
+        switch ($filter)
+        {
+            case 'prd':
+                $textFilter = 'sepia';
+                break;
+            case 'bw':
+                $textFilter = 'blanco y negro';
+                break;
+            case 'ctr':
+                $textFilter = 'citrico';
+                break;
+            case 'frm':
+                $textFilter = 'con bordes';
+                break;
+            case 'flp':
+                $textFilter = 'invertida';
+                break;
+        }
+        return $textFilter;
     }
 }

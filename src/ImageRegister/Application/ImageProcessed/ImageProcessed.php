@@ -26,13 +26,11 @@ final class ImageProcessed
             $imageProcessedRequest->nameImage(),
             $imageProcessedRequest->pathImage(),
             $imageProcessedRequest->extImage(),
-            '',
+            null,
             $imageProcessedRequest->tagImage(),
             $imageProcessedRequest->descriptionImage(),
             $imageProcessedRequest->newPathImage()
         );
-
-        //Llamar al metodo Save, Guardar la imagen original de $imageToProcess, que contiene Uuid
 
         $message =  $imageToProcess->message();
 

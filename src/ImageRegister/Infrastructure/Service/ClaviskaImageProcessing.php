@@ -26,13 +26,13 @@ final class ClaviskaImageProcessing
                 ->bestFit(300, 600);
 
                 switch ($parameters['filter']) {
-                    case 'sepia':
+                    case 'prd':
                         $this->simpleImage->sepia();
                         break;
                     case 'bw':
                         $this->simpleImage->desaturate();
                         break;
-                    case 'drk':
+                    case 'ctr':
                         $this->simpleImage->colorize('DarkGreen');
                         break;
                     case 'frm':
