@@ -60,7 +60,7 @@ Los ficheros de configuración de los contenedores, se encuentran en:
  
 ## 💻 Casos de uso 
 
-### ⛱️Subir imágenes
+### ⛱ Subir imágenes
 
 El formulario para la [subida de imágenes](http://localhost:8080/upload) espera un tag, una descripción y una o más imágenes para subirlas al servidor y las guarda en la [carpeta de Upload](public/assets/uploads). 
 
@@ -68,9 +68,11 @@ El formulario para la [subida de imágenes](http://localhost:8080/upload) espera
 
 De la subida de imágenes se realiza unas transformaciones de manera concurrente con [RabbitMq](http://localhost:15672/), el [productor](src/Shared/Infrastructure/RabbitMq/RabbitMqProducer.php) 
 envia mensajes al [consumidor](src/Shared/Infrastructure/RabbitMq/RabbitMqConsumer.php) para que este se encargue de llamar a [Claviska](src/ImageRegister/Infrastructure/Service/ClaviskaImageProcessing.php)
-para que realice el procesado de filtros: sepia, blanco y negro, oscurecido verde, imagen invertida e imagen con bordes en negro y las guarde en la carpeta de [imágenes transformadas](public/assets/img).
+para que realice el procesado de filtros: sepia, blanco y negro, cítrico, imagen con bordes en negro e imagen invertida   y las guarde en la carpeta de [imágenes transformadas](public/assets/img).
 
 ### 🏪 Guardar
+
+La información de nuestro agregado [registro de imágenes](src/ImageRegister/Domain/Model/Aggregate/ImageRegister.php) (imagen original, sus transformaciones, tag y descripción) la guardamos en MySQL.
 
 ### 🎰 Buscar
 
