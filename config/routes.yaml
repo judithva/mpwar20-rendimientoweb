@@ -5,3 +5,7 @@
 upload:
   path: /upload
   controller: LaSalle\Rendimiento\JudithVilela\ImageRegister\Infrastructure\Controller\uploadImagesController::upload
+
+gallery:
+  path: /gallery
+  controller: LaSalle\Rendimiento\JudithVilela\ImageRegister\Infrastructure\Controller\GalleryImagesController::gallery

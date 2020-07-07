@@ -7,6 +7,7 @@ use LaSalle\Rendimiento\JudithVilela\ImageRegister\Domain\ImageRegisterRepositor
 use LaSalle\Rendimiento\JudithVilela\ImageRegister\Domain\Model\Aggregate\ImageRegister;
 use LaSalle\Rendimiento\JudithVilela\ImageRegister\Domain\Model\ValueObject\ImageId;
 use LaSalle\Rendimiento\JudithVilela\ImageRegister\Infrastructure\Persistence\MysqlDatabase;
+use PDO;
 
 class MySQLImageRegisterRepository implements ImageRegisterRepository
 {
@@ -42,6 +43,46 @@ class MySQLImageRegisterRepository implements ImageRegisterRepository
 
     public function find(ImageId $imageId): ?ImageRegister
     {
-        // TODO: Implement find() method.
+        $sql = 'SELECT * FROM ImageRegister where idImage = :idImage';
+        $statement = $this->pdoClient->prepare($sql);
+        $statement->bindValue(':idImage', $imageId->getId());
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+        if(!$result) {
+            return null;
+        }
+
+        $idImage = new ImageId($result['idImage']);
+        $imageName = $result['imageName'];
+        $imagePath = $result['imagePath'];
+        $imageExt = $result['imageExt'];
+        $imageFilter = $result['imageFilter'];
+        $tags = $result['tags'];
+        $description = $result['description'];
+
+        var_dump($idImage);
+        var_dump($imageName);
+        var_dump($imagePath);
+        var_dump($imageExt);
+        var_dump($imageFilter);
+        var_dump($tags);
+        var_dump($description);
+
+        return new ImageRegister($idImage, $imageName, $imagePath, $imageExt, $imageFilter, $tags, $description);
+    }
+
+    public function findAll(): array
+    {
+        $sql = 'SELECT idImage, imageName, imagePath, imageExt, imageFilter, tags, description FROM ImageRegister';
+        $statement = $this->pdoClient->prepare($sql);
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        if (!empty($results)) {
+            return $results;
+        }
+
+        return [];
     }
 }

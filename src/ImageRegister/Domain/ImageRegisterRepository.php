@@ -11,4 +11,6 @@ interface ImageRegisterRepository
     public function save(ImageRegister $imageRegister): void;
 
     public function find(ImageId $imageId): ?ImageRegister;
+
+    public function findAll(): array;
 }

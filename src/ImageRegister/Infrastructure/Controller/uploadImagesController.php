@@ -9,6 +9,7 @@ use LaSalle\Rendimiento\JudithVilela\ImageRegister\Application\SaveImage\SaveIma
 use LaSalle\Rendimiento\JudithVilela\ImageRegister\Application\SaveImage\SaveImageRequest;
 use LaSalle\Rendimiento\JudithVilela\ImageRegister\Infrastructure\Form\ImageType;
 use LaSalle\Rendimiento\JudithVilela\ImageRegister\Infrastructure\Persistence\Repository\MySQLImageRegisterRepository;
+use LaSalle\Rendimiento\JudithVilela\ImageRegister\Infrastructure\Persistence\Repository\RedisCacheRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Form\FormError;
@@ -26,6 +27,9 @@ final class uploadImagesController extends AbstractController
     /** @var SaveImage */
     private $saveImage;
 
+    /** @var RedisCacheRepository */
+    private $redisRepository;
+
       /**
      * @param ImageProcessed
      * @param SaveImage
@@ -34,6 +38,7 @@ final class uploadImagesController extends AbstractController
     {
         $this->imageProcessed = $imageProcessed;
         $this->saveImage = $saveImage;
+        $this->redisRepository = new RedisCacheRepository();
     }
 
     /**
@@ -70,6 +75,8 @@ final class uploadImagesController extends AbstractController
                         echo '</pre>';*/
 
                         try {
+                            $this->redisRepository->delete('images');
+
                             $file->move($this->getPath(), $newFileName);
 
                             $imageMysqlRepository = new MySQLImageRegisterRepository();
