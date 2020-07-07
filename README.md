@@ -1,14 +1,15 @@
-# 👀 Práctica Registro de Imágenes
+# 🎥 👀 Práctica Registro de Imágenes
 
 ## Índice
 
 * [🎉 Introducción](#-introduccion)
-* [🔗 Puesta en marcha](#-inicializacion)
+* [🐳 Puesta en marcha](#-inicializacion)
 * [📊 Infraestructura](#-infraestructura)
 * [💻 Casos de uso](#-casos-de-uso)
     * [⛱ Subir imágenes](#-subir-imagenes)
-    * [🔗 Procesar](#-procesar)
-    * [🏪 Guardar](#-guardar)
+    * [🔗 Procesar imágenes](#-procesar-imagenes)
+    * [🏪 Guardar post](#-guardar-post)
+    * [🌍 Galería de imágenes](#-galeria-imagenes)
     * [🎰 Buscar](#-buscar)
 * [🚀 Arquitectura](#-arquitectura)
 * [🤔 Consideraciones](#-consideraciones)
@@ -22,20 +23,29 @@ Esta práctica tiene como base el repositorio de [MPWAR-Rendimiento-Docker](http
 
 Para más info ver [composer](composer.json)
 
-## 🔗 Puesta en marcha
+## 🐳 Puesta en marcha
 
 Previamente se ha de tener instalado [Docker](https://www.docker.com/get-started)
 
 Para inicializar el proyecto se ha de levantar el entorno siguiendo los siguientes pasos:
 
     * Para levantar el servidor y todos los servicios   
-    sudo docker-compose up -d
+        sudo docker-compose up -d
     
     * Para entrar al contenedor de PHP
-    sudo docker exec -it mpwarrendimientoweb_php_1  bash
+        sudo docker exec -it mpwarrendimientoweb_php_1 bash
+    
+    * Para entrar al contenedor de RabbitMq
+        sudo docker exec -it mpwarrendimientoweb_rabbitmq_1 bash
+        
+    * Para entrar al contenedor de Redis
+        sudo docker exec -it mpwarrendimientoweb_redis_1 bash
+        redis-cli
+    
+        
 
 Una vez se haya levantado el entorno es necesario ejecutar el script de nuestro esquema de datos: 
-    [ImageRegister.sql](var/mysql/db/ImageRegister.sql)   
+    [ImageRegister.sql](docker/db/ImageRegister.sql)   
 
 ## 📊 Infraestructura
 
@@ -48,10 +58,10 @@ Los ficheros de configuración de los contenedores, se encuentran en:
     src
     .
    docker
+   ├── db
    ├── nginx
    └── php-fpm
-   var/mysql
-   ├── db
+   var/mysql   
    ├── mysql
    └── performance_schema
    etc/php
@@ -60,22 +70,42 @@ Los ficheros de configuración de los contenedores, se encuentran en:
  
 ## 💻 Casos de uso 
 
-### ⛱ Subir imágenes
+### ⛱ Subir imágenes  
 
 El formulario para la [subida de imágenes](http://localhost:8080/upload) espera un tag, una descripción y una o más imágenes para subirlas al servidor y las guarda en la [carpeta de Upload](public/assets/uploads). 
 
-### 🔗 Procesar
+### 🔗 Procesar imágenes
 
 De la subida de imágenes se realiza unas transformaciones de manera concurrente con [RabbitMq](http://localhost:15672/), el [productor](src/Shared/Infrastructure/RabbitMq/RabbitMqProducer.php) 
 envia mensajes al [consumidor](src/Shared/Infrastructure/RabbitMq/RabbitMqConsumer.php) para que este se encargue de llamar a [Claviska](src/ImageRegister/Infrastructure/Service/ClaviskaImageProcessing.php)
-para que realice el procesado de filtros: sepia, blanco y negro, cítrico, imagen con bordes en negro e imagen invertida   y las guarde en la carpeta de [imágenes transformadas](public/assets/img).
+para que realice el procesado de filtros:
 
-### 🏪 Guardar
+    * Sepia
+    * Blanco y negro
+    * Cítrico
+    * Imagen con bordes en negro e 
+    * Imagen invertida  
+ 
+ y las guarde en la carpeta de [imágenes transformadas](public/assets/img).
 
-La información de nuestro agregado [registro de imágenes](src/ImageRegister/Domain/Model/Aggregate/ImageRegister.php) (imagen original, sus transformaciones, tag y descripción) la guardamos en MySQL.
+### 🏪 Guardar post
 
+La información de nuestro agregado [registro de imágenes](src/ImageRegister/Domain/Model/Aggregate/ImageRegister.php) (imagen original, sus transformaciones, tag y descripción) la guardamos en [MySql](src/ImageRegister/Infrastructure/Persistence/Repository/MySQLImageRegisterRepository.php).
+
+### 🌍 Galería de imágenes
+
+En la [Galería de imágenes](http://localhost:8080/gallery) podemos ver todas las imágenes, sus transformaciones y la información de cada uno de ellas que se han subido a nuestra web. En nuestro caso de uso
+de [Ver imágenes](src/ImageRegister/Application/ViewImage/ViewImage.php) se utiliza [Redis](src/ImageRegister/Infrastructure/Persistence/Repository/RedisCacheRepository.php) y [MySql](src/ImageRegister/Infrastructure/Persistence/Repository/MySQLImageRegisterRepository.php). 
+    
 ### 🎰 Buscar
 
+
+### Mapa Web
+
+Estos son los diferentes enlaces que hay definidos en nuestra aplicación web:  
+
+ * ⛱ Subir imágenes  [http://localhost:8080/upload](http://localhost:8080/upload) 
+ * 🌍 Galería de imágenes [http://localhost:8080/gallery](http://localhost:8080/gallery)
 
 ## 🚀 Arquitectura
 Esta practica sigue el patrón de Arquitectura Hexagonal, para ello se ha estructurado de la siguiente  manera:
@@ -87,9 +117,14 @@ src
 .
 ├── ImageRegister
 │   ├── Application
-│   │   └── ImageProcessed
-│   │       ├── ImageProcessed.php
-│   │       └── ImageProcessedRequest.php
+│   │   ├── ImageProcessed
+│   │   │   ├── ImageProcessed.php
+│   │   │   └── ImageProcessedRequest.php
+│   │   ├── SaveImage
+│   │   │   ├── SaveImage.php
+│   │   │   └── SaveImageRequest.php
+│   │   └── ViewImage
+│   │       └── ViewImage.php
 │   ├── Domain
 │   │   ├── ImageRegisterRepository.php
 │   │   ├── Model
@@ -102,12 +137,16 @@ src
 │   │       └── ImageProcess.php
 │   └── Infrastructure
 │       ├── Controller
+│       │   ├── GalleryImagesController.php
 │       │   └── uploadImagesController.php
 │       ├── Form
 │       │   └── ImageType.php
 │       ├── Persistence
 │       │   ├── MysqlDatabase.php
+│       │   ├── RedisCache.php
 │       │   └── Repository
+│       │       ├── MySQLImageRegisterRepository.php
+│       │       └── RedisCacheRepository.php
 │       └── Service
 │           └── ClaviskaImageProcessing.php
 ├── Kernel.php
