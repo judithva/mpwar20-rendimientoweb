@@ -27,10 +27,8 @@ final class ViewImage
     public function __invoke(): array
     {
         if ($this->redisRepository->find('images')) {
-            //echo 'Entra en REDIS';
             $images = $this->redisRepository->findAll('images');
         } else {
-            //echo 'My Gallery MySQL:';
             $images = $this->imageRegisterRepository->findAll();
             $this->redisRepository->saveAll('images', $images);
         }

@@ -74,7 +74,7 @@ class MySQLImageRegisterRepository implements ImageRegisterRepository
 
     public function findAll(): array
     {
-        $sql = 'SELECT idImage, imageName, imagePath, imageExt, imageFilter, tags, description FROM ImageRegister';
+        $sql = 'SELECT idImage, imageName, imagePath, imageExt, imageFilter, tags, description FROM ImageRegister order by imageName DESC';
         $statement = $this->pdoClient->prepare($sql);
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);

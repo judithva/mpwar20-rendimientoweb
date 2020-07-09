@@ -18,13 +18,17 @@
                             <div class="card">
                                 <div class="card-body">
                                     <p class="card-title mb-0">{{ image.imageName }}</p>
-                                    <p class="card-text mb-0"><small class="text-muted">{{ image.idImage }}</small></p>
-                                    <p class="card-text mb-0">{{ image.imageFilter }}</p>
-                                    <p class="card-text mb-0">{{ image.tags }}</p>
+                                    <!--<p class="card-text mb-0"><small class="text-muted">{#{ image.idImage }#}</small></p>-->
+                                    <p class="card-text mb-0"><small class="text-muted">{{ image.imageFilter }}</small></p>
+                                    <p class="card-text mb-0"><small class="text-muted">{{ image.tags }}</small></p>
                                     <p class="card-text mb-0">{{ image.description }}</p>
-                                    <img class="card-img-top" src="{{ asset(image.imageName, 'imgTransformada') }}" alt="{{ image.tags }}"  width="80" height="100">
-                                    <p class="card-text mb-0"><small class="text-muted">{{ image.imageExt }}</small></p>
-                                    <p class="card-text mb-0"><small class="text-muted">{{ image.imagePath }}</small></p>
+                                    {% if image.imageFilter is same as ('sin filtro')  %}
+                                        <img class="card-img-top" src="{{ asset(image.imageName, 'img') }}" alt="{{ image.tags }}"  width="80" height="100">
+                                    {% else %}
+                                        <img class="card-img-top" src="{{ asset(image.imageName, 'imgTransformada') }}" alt="{{ image.tags }}"  width="80" height="100">
+                                    {% endif %}
+                                    <!--<p class="card-text mb-0"><small class="text-muted">{#{ image.imageExt }#}</small></p>-->
+                                    <!--<p class="card-text mb-0"><small class="text-muted">{#{ image.imagePath }#}</small></p>-->
                                 </div>
                             </div>
                         </div>

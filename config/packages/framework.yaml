@@ -20,3 +20,5 @@ framework:
         packages:
             imgTransformada:
                 base_path:  '/assets/img'
+            img:
+                base_path:  '/assets/uploads'
