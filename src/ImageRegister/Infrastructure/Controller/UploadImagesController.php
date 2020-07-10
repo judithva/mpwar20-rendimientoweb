@@ -7,6 +7,7 @@ use LaSalle\Rendimiento\JudithVilela\ImageRegister\Application\ImageProcessed\Im
 use LaSalle\Rendimiento\JudithVilela\ImageRegister\Application\ImageProcessed\ImageProcessedRequest;
 use LaSalle\Rendimiento\JudithVilela\ImageRegister\Application\SaveImage\SaveImage;
 use LaSalle\Rendimiento\JudithVilela\ImageRegister\Application\SaveImage\SaveImageRequest;
+use LaSalle\Rendimiento\JudithVilela\ImageRegister\Domain\Model\ValueObject\ImageId;
 use LaSalle\Rendimiento\JudithVilela\ImageRegister\Infrastructure\Form\ImageType;
 use LaSalle\Rendimiento\JudithVilela\ImageRegister\Infrastructure\Persistence\Repository\ElasticSearchRepository;
 use LaSalle\Rendimiento\JudithVilela\ImageRegister\Infrastructure\Persistence\Repository\MySQLImageRegisterRepository;
@@ -20,7 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-final class uploadImagesController extends AbstractController
+final class UploadImagesController extends AbstractController
 {
     /** @var ImageProcessed */
     private $imageProcessed;
@@ -111,7 +112,7 @@ final class uploadImagesController extends AbstractController
                         new FormError($exception->getMessage())
                     );
                     return $this->render(
-                        'dropzone/dropzone.html.twig',
+                        'upload/upload.html.twig',
                         ['form' => $form->createView()]
                     );
                 }
@@ -119,7 +120,7 @@ final class uploadImagesController extends AbstractController
         }
 
         return $this->render(
-            'dropzone/dropzone.html.twig',
+            'upload/upload.html.twig',
             ['form' => $form->createView()]
         );
     }
@@ -131,12 +132,11 @@ final class uploadImagesController extends AbstractController
 
     private function getNewImage($file)
     {
-        return time() . '.' . $this->getExtImage($file->getClientOriginalName());
+        return ImageId::generate()->getId() . '.' . $this->getExtImage($file->getClientOriginalName());
     }
 
     private function getPath()
     {
-        //return DIRECTORY_SEPARATOR . $this->getParameter('app.storage_folder') . DIRECTORY_SEPARATOR;
         return $this->getParameter('app.storage_folder').DIRECTORY_SEPARATOR;
     }
 

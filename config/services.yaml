@@ -53,7 +53,7 @@ services:
         arguments:
             - '@LaSalle\Rendimiento\JudithVilela\Shared\Infrastructure\Bus\Event\RabbitMq\RabbitMqProducer'
 
-    LaSalle\Rendimiento\JudithVilela\ImageRegister\Infrastructure\Controller\uploadImagesController:
+    LaSalle\Rendimiento\JudithVilela\ImageRegister\Infrastructure\Controller\UploadImagesController:
         arguments:
             - '@LaSalle\Rendimiento\JudithVilela\ImageRegister\Application\ImageProcessed\ImageProcessed'
             - '@LaSalle\Rendimiento\JudithVilela\ImageRegister\Application\SaveImage\SaveImage'

@@ -5,10 +5,8 @@ Dropzone.options.myDropzone = {
     autoProcessQueue: false,
     uploadMultiple: true,
     parallelUploads: 5,
-    maxFilesize: 3, //MB
-    maxFiles: 2,    //Only 2 Image can be uploaded
+    maxFilesize: 30, //MB
     acceptedFiles: ".png",
-    dictMaxFilesExceeded: 'Only 2 Image can be uploaded',
     dictDefaultMessage: "To add file click/add file here",
 
     init:function(){

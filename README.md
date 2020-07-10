@@ -75,7 +75,7 @@ Los ficheros de configuración de los contenedores, se encuentran en:
 
 ### ⛱ Subir imágenes  
 
-El formulario para la [subida de imágenes](src/ImageRegister/Infrastructure/Controller/uploadImagesController.php) espera un tag, una descripción y una o más imágenes para subirlas al servidor y las guarda en la [carpeta de Upload](public/assets/uploads). 
+El formulario para la [subida de imágenes](src/ImageRegister/Infrastructure/Controller/UploadImagesController.php) espera un tag, una descripción y una o más imágenes para subirlas al servidor y las guarda en la [carpeta de Upload](public/assets/uploads). 
 
 ### 🔗 Procesar imágenes
 

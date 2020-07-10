@@ -17,8 +17,7 @@
                         <div class="col-12 col-md-6 col-lg-3">
                             <div class="card">
                                 <div class="card-body">
-                                    <p class="card-title mb-0">{{ image.imageName }}</p>
-                                    <!--<p class="card-text mb-0"><small class="text-muted">{#{ image.idImage }#}</small></p>-->
+                                    <p class="card-title mb-0"><small class="text-body">{{ image.imageName }}</small></p>
                                     <p class="card-text mb-0"><small class="text-muted">{{ image.imageFilter }}</small></p>
                                     <p class="card-text mb-0"><small class="text-muted">{{ image.tags }}</small></p>
                                     <p class="card-text mb-0">{{ image.description }}</p>
@@ -27,8 +26,6 @@
                                     {% else %}
                                         <img class="card-img-top" src="{{ asset(image.imageName, 'imgTransformada') }}" alt="{{ image.tags }}"  width="80" height="100">
                                     {% endif %}
-                                    <!--<p class="card-text mb-0"><small class="text-muted">{#{ image.imageExt }#}</small></p>-->
-                                    <!--<p class="card-text mb-0"><small class="text-muted">{#{ image.imagePath }#}</small></p>-->
                                 </div>
                             </div>
                         </div>
