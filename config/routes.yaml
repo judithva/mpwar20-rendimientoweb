@@ -9,3 +9,7 @@ upload:
 gallery:
   path: /gallery
   controller: LaSalle\Rendimiento\JudithVilela\ImageRegister\Infrastructure\Controller\GalleryImagesController::gallery
+
+search:
+  path: /search
+  controller: LaSalle\Rendimiento\JudithVilela\ImageRegister\Infrastructure\Controller\SearchImagesController::search

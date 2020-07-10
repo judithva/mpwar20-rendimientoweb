@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title %}LaSalle Web - Search images!{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <p><br></p>
+                <h3 class="h3 mb-3 font-weight-normal">Search your images by tags, filters and descriptions</h3><hr>
+                <div class="form-group">
+                    <form  action="{{ path('search') }}" method="get" enctype="multipart/form-data">
+                        <div class="col">
+                            <div>
+                                <p><input type="text" name='search' placeholder="Search the website" class="form-control"></p>
+                            </div>
+                            <div>
+                                <p><button type="submit" class="btn btn-sm btn-primary">Search</button></p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                {% if searchTerm is not empty %}
+                    <div><p><br></p></div>
+                    {% if results is empty %}
+                    <div class="form-group">
+                        <p>No search results found.</p>
+                    </div>
+                    {% else %}
+                    <div class="form-group">
+                        <div class="card-deck ">
+                            {% for result in results  %}
+                                <div class="col-12 col-md-6 col-lg-3">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <p class="card-title mb-0">{{ result.imageName }}</p>
+                                            <p class="card-text mb-0"><small class="text-muted">{{ result.filter }}</small></p>
+                                            <p class="card-text mb-0"><small class="text-muted">{{ result.tags }}</small></p>
+                                            <p class="card-text mb-0">{{ result.description }}</p>
+                                            {% if result.filter is same as ('sin filtro') %}
+                                                <img class="card-img-top" src="{{ asset(result.imageName, 'img') }}" alt="{{ result.tags }}"  width="80" height="100">
+                                            {% else %}
+                                                <img class="card-img-top" src="{{ asset(result.imageName, 'imgTransformada') }}" alt="{{ result.tags }}"  width="80" height="100">
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

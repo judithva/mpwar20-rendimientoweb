@@ -28,13 +28,22 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
+    LaSalle\Rendimiento\JudithVilela\ImageRegister\Infrastructure\Controller\SearchImagesController:
+        arguments:
+            - '@LaSalle\Rendimiento\JudithVilela\ImageRegister\Application\SearchImage\SearchImage'
+        tags:
+            - { name: 'image.search'}
+
     LaSalle\Rendimiento\JudithVilela\ImageRegister\Infrastructure\Controller\GalleryImagesController:
         arguments:
             - '@LaSalle\Rendimiento\JudithVilela\ImageRegister\Application\ViewImage\ViewImage'
+        tags:
+            - { name: 'image.gallery'}
 
     LaSalle\Rendimiento\JudithVilela\ImageRegister\Application\SaveImage\SaveImage:
         arguments:
             - '@LaSalle\Rendimiento\JudithVilela\ImageRegister\Infrastructure\Persistence\Repository\MySQLImageRegisterRepository'
+            - '@LaSalle\Rendimiento\JudithVilela\ImageRegister\Infrastructure\Persistence\Repository\ElasticSearchRepository'
 
     LaSalle\Rendimiento\JudithVilela\Shared\Infrastructure\Bus\Event\RabbitMq\RabbitMqProducer:
         arguments:

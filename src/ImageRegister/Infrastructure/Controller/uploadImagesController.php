@@ -8,6 +8,7 @@ use LaSalle\Rendimiento\JudithVilela\ImageRegister\Application\ImageProcessed\Im
 use LaSalle\Rendimiento\JudithVilela\ImageRegister\Application\SaveImage\SaveImage;
 use LaSalle\Rendimiento\JudithVilela\ImageRegister\Application\SaveImage\SaveImageRequest;
 use LaSalle\Rendimiento\JudithVilela\ImageRegister\Infrastructure\Form\ImageType;
+use LaSalle\Rendimiento\JudithVilela\ImageRegister\Infrastructure\Persistence\Repository\ElasticSearchRepository;
 use LaSalle\Rendimiento\JudithVilela\ImageRegister\Infrastructure\Persistence\Repository\MySQLImageRegisterRepository;
 use LaSalle\Rendimiento\JudithVilela\ImageRegister\Infrastructure\Persistence\Repository\RedisCacheRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -80,7 +81,8 @@ final class uploadImagesController extends AbstractController
                             $file->move($this->getPath(), $newFileName);
 
                             $imageMysqlRepository = new MySQLImageRegisterRepository();
-                            $this->saveImage->__construct($imageMysqlRepository);
+                            $elasticRepository =new ElasticSearchRepository();
+                            $this->saveImage->__construct($imageMysqlRepository, $elasticRepository);
                             $this->saveImage->__invoke(new SaveImageRequest(
                                 $newFileName,
                                 $targetFile,
