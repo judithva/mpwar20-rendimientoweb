@@ -143,7 +143,7 @@ Estos son los diferentes enlaces que hay definidos en nuestra aplicación web:
 ## ✅ Profiling
 
 Para realizar el profiling de la aplicación se han utilizado **Blackfire** y **LightHouse**, los resultados obtenidos con estas dos herramientas se encuentran en la carpeta [Profiling](profiling)
-y las mejoras aplicadas se podrán leer en [Profiling](Profiling.md)
+y las mejoras aplicadas se podrán leer en [Profiling](Profiling.md).
 
 
 
