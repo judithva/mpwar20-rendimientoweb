@@ -6,7 +6,8 @@ RUN apt-get update && apt-get install -y \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
         libpng-dev \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+        libwebp-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg  --with-webp\
     && docker-php-ext-install -j$(nproc) gd
 
 RUN pecl install -o -f redis \

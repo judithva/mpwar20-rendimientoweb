@@ -42,7 +42,7 @@ final class ClaviskaImageProcessing
                         $this->simpleImage->flip('x');
                         break;
                 }
-            $this->simpleImage->toFile($parameters['processedImagePath'],'image/png');
+            $this->simpleImage->toFile($parameters['processedImagePath'],'image/webp');
 
         } catch (\Exception $exception) {
             echo 'Error processing image:' . $exception->getMessage();

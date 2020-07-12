@@ -1,6 +1,6 @@
 <?php
 
-namespace LaSalle\Rendimiento\JudithVilela\Shared\Infrastructure\Bus\Event\RabbitMq;
+namespace LaSalle\Rendimiento\JudithVilela\Shared\Infrastructure\RabbitMq;
 
 
 use LaSalle\Rendimiento\JudithVilela\ImageRegister\Domain\Service\ImageProcess;

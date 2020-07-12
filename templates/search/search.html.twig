@@ -43,9 +43,9 @@
                                             <p class="card-text mb-0"><small class="text-muted">{{ result.tags }}</small></p>
                                             <p class="card-text mb-0">{{ result.description }}</p>
                                             {% if result.filter is same as ('sin filtro') %}
-                                                <img class="card-img-top" src="{{ asset(result.imageName, 'img') }}" alt="{{ result.tags }}"  width="80" height="100">
+                                                <img class="card-img-top" src="{{ asset(result.imageName, 'img') }}" alt="{{ result.tags }}">
                                             {% else %}
-                                                <img class="card-img-top" src="{{ asset(result.imageName, 'imgTransformada') }}" alt="{{ result.tags }}"  width="80" height="100">
+                                                <img class="card-img-top" src="{{ asset(result.imageName, 'imgTransformada') }}" alt="{{ result.tags }}">
                                             {% endif %}
                                         </div>
                                     </div>

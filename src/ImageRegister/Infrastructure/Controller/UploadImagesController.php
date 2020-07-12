@@ -66,16 +66,6 @@ final class UploadImagesController extends AbstractController
                         $targetFile = $this->getPath() . $newFileName;
                         $extFile = $this->getExtImage($file->getClientOriginalName());
 
-                        /*echo '<pre>';
-                        var_dump($file);
-                        var_dump('newFileName::'.$newFileName);
-                        var_dump('Tags: '.$tags);
-                        var_dump('Descripcion: '. $description);
-                        var_dump('extFile::'.$extFile);
-                        var_dump('TargetPath:::'.$this->getPath());
-                        var_dump('TargetFile:::'.$targetFile);
-                        echo '</pre>';*/
-
                         try {
                             $this->redisRepository->delete('images');
 
@@ -95,7 +85,7 @@ final class UploadImagesController extends AbstractController
                                 new ImageProcessedRequest(
                                     $newFileName,
                                     $targetFile,
-                                    $extFile,
+                                    'webp',
                                     $tags,
                                     $description,
                                     $this->getNewPath()

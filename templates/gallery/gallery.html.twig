@@ -22,9 +22,9 @@
                                     <p class="card-text mb-0"><small class="text-muted">{{ image.tags }}</small></p>
                                     <p class="card-text mb-0">{{ image.description }}</p>
                                     {% if image.imageFilter is same as ('sin filtro')  %}
-                                        <img class="card-img-top" src="{{ asset(image.imageName, 'img') }}" alt="{{ image.tags }}"  width="80" height="100">
+                                        <img class="card-img-top" src="{{ asset(image.imageName, 'img') }}" alt="{{ image.tags }}">
                                     {% else %}
-                                        <img class="card-img-top" src="{{ asset(image.imageName, 'imgTransformada') }}" alt="{{ image.tags }}"  width="80" height="100">
+                                        <img class="card-img-top" src="{{ asset(image.imageName, 'imgTransformada') }}" alt="{{ image.tags }}">
                                     {% endif %}
                                 </div>
                             </div>

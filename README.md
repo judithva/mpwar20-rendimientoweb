@@ -12,6 +12,7 @@
     * [🌍 Galería de imágenes](#-galeria-imagenes)
     * [🎰 Buscador de imágenes](#-buscador-imagenes)
 * [👀 Mapa Web](#mapa-web)    
+* [✅ Profiling](#profiling)
 * [🚀 Arquitectura](#-arquitectura)
 * [🤔 Consideraciones](#-consideraciones)
 
@@ -52,9 +53,9 @@ Una vez se haya levantado el entorno es necesario ejecutar el script de nuestro 
         
 ## 📊 Infraestructura
 
-Los ficheros de configuración de los contenedores, se encuentran en:
+Los ficheros de configuración de los contenedores y del modelo de datos, se encuentran en:
  
- * PHP, MySql y Nginx
+ * DB, PHP, MySql y Nginx
  
     ```scala
     $ tree docker -d  var/mysql -d  etc/php -d    
@@ -139,6 +140,12 @@ Estos son los diferentes enlaces que hay definidos en nuestra aplicación web:
  * 🎰 Buscador de imágenes [http://localhost:8080/search](http://localhost:8080/search)
 
 
+## ✅ Profiling
+
+Para realizar el profiling de la aplicación se han utilizado **Blackfire** y **LightHouse**, los resultados obtenidos con estas dos herramientas se encuentran en la carpeta [Profiling](profiling)
+y las mejoras aplicadas se podrán leer en [Profiling](Profiling.md)
+
+
 
 ## 🚀 Arquitectura
 Esta practica sigue el patrón de Arquitectura Hexagonal, para ello se ha estructurado de la siguiente  manera:
@@ -200,5 +207,5 @@ src
 
 *  Se ha utilizado:
     *   [Symfony 4.4.10](https://symfony.com/doc/4.4/index.html)
-    *   [ElasticSearch 6.8](https://www.elastic.co/guide/en/elastic-stack/6.8/elastic-stack.html) 
+    *   [ElasticSearch 6.8](https://www.elastic.co/guide/en/elastic-stack/6.8/elastic-stack.html)  
         
